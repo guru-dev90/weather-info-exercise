@@ -1,7 +1,11 @@
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
+import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
+import citiesWeatherListReducer from "./citiesWeatherSlice";
+import dropdownMenuReducer from "./dropdownMenuSlice";
 
 export const store = configureStore({
   reducer: {
+    citiesWeatherList: citiesWeatherListReducer,
+    dropdownMenuItems: dropdownMenuReducer,
   },
 });
 
