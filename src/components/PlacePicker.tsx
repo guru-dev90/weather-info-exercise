@@ -39,7 +39,7 @@ function PlacePicker() {
       value: elem._id,
     }));
     dispatch(addMenuItems({ menuItems }));
-  }, []);
+  }, [dispatch]);
 
   const customSelectStyles = {
     control: (styles: any) => ({
@@ -57,14 +57,14 @@ function PlacePicker() {
     placeholder: (styles: any) => ({
       // controlla stili del selettore
       ...styles,
-      fontSize: "0.8rem",
+      fontSize: "1.2rem",
       color: "#6e6e6e",
       textAlign: "left",
     }),
     option: (styles: any) => ({
       // controlla stili del menù a tendina
       ...styles,
-      fontSize: "0.8rem",
+      fontSize: "1.2rem",
       color: "#383737",
       fontWeight: "bold",
     }),
@@ -79,10 +79,16 @@ function PlacePicker() {
       components={{ DropdownIndicator }}
       options={menuItems}
       value={selection}
-      onChange={(opt: any) => {
+      onChange={async (opt: any) => {
         if (opt) {
           setSelection(0);
-          dispatch(getWeatherInfoAsync({ name: opt.label, id: opt.value }));
+          //try {
+          dispatch(getWeatherInfoAsync({ id: opt.value, name: opt.label }));
+          //const originalPromiseResult = unwrapResult(resultAction);
+          //console.log(originalPromiseResult);
+          //} catch (rejectedValueOrSerializedError) {
+          // handle error here
+          //}
 
           const updatedMenuItems = menuItems.filter(
             (entry: any) => entry.value !== opt.value

@@ -7,6 +7,7 @@ export const store = configureStore({
     citiesWeatherList: citiesWeatherListReducer,
     dropdownMenuItems: dropdownMenuReducer,
   },
+  devTools: true,
 });
 
 export type AppDispatch = typeof store.dispatch;

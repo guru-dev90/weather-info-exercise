@@ -13,15 +13,30 @@
   margin: 15px 15px 15px 20px;
 }
 
+.place-weather-container {
+  display: flex;
+  justify-content: flex-start;
+  width: 70%;
+}
+
 .place-name {
-  width: 35%;
+  width: 20%;
   height: 100%;
   font-weight: bold;
 }
 
-.place-weather {
+.place-weather-description {
   width: 45%;
   height: 100%;
+  margin-left: 8px;
+}
+
+.error-icon {
+  color: orange;
+}
+
+.error-message {
+  color: orange;
 }
 
 .place-controls-container {

@@ -8,12 +8,20 @@ function PlaceList() {
   const citiesWeatherList = useAppSelector<ICitiesWeatherStateEntry[]>(
     (state) => state.citiesWeatherList
   );
+
   return (
     <div className="main-container">
       <div className="entry-container">
         {citiesWeatherList.map((city) => {
           return (
-            <PlaceEntry key={city.id} placeName={city.name} placeId={city.id} />
+            <PlaceEntry
+              key={city.id}
+              placeId={city.id}
+              placeName={city.name}
+              placeWeather={city.weatherDescription}
+              placeWeatherIcon={city.weatherIcon}
+              errorFlag={city.errorFlag}
+            />
           );
         })}
       </div>

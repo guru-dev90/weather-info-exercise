@@ -1,32 +1,37 @@
 import React from "react";
-import { faRedoAlt, faTimes } from "@fortawesome/free-solid-svg-icons";
+
+import {
+  faRedoAlt,
+  faTimes,
+  faExclamationCircle,
+} from "@fortawesome/free-solid-svg-icons";
 
 import "../styles/PlaceEntry.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  deleteCity,
-  ICitiesWeatherStateEntry,
-  updateWeatherInfoAsync,
-} from "../app/citiesWeatherSlice";
+import { deleteCity, updateWeatherInfoAsync } from "../app/citiesWeatherSlice";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { addMenuItems } from "../app/dropdownMenuSlice";
 
 interface IPlaceEntryProps {
-  placeName: string;
   placeId: string;
+  placeName: string;
+  placeWeather: string | null;
+  placeWeatherIcon: string | null;
+  errorFlag: boolean;
 }
 
-function PlaceEntry({ placeName, placeId }: IPlaceEntryProps) {
+function PlaceEntry({
+  placeId,
+  placeName,
+  placeWeather,
+  placeWeatherIcon,
+  errorFlag,
+}: IPlaceEntryProps) {
   const dispatch = useAppDispatch();
   const menuItems = useAppSelector((state) => state.dropdownMenuItems)[0];
-  const weatherInfo: ICitiesWeatherStateEntry = useAppSelector(
-    (state) => state.citiesWeatherList
-  )[0];
-
-  console.log(weatherInfo);
 
   const handleRefreshClick = () => {
-    dispatch(updateWeatherInfoAsync({ name: placeName, id: placeId }));
+    dispatch(updateWeatherInfoAsync({ id: placeId, name: placeName }));
   };
 
   const handleDeleteClick = () => {
@@ -41,13 +46,38 @@ function PlaceEntry({ placeName, placeId }: IPlaceEntryProps) {
   return (
     <div className="place-entry">
       <div className="place-name cell">{placeName}</div>
-      <div className="place-weather cell">{weatherInfo.weatherDescription}</div>
+      {!errorFlag ? (
+        <div className="place-weather-container">
+          <div className="place-weather-icon">
+            <img
+              src={`http://openweathermap.org/img/w/${placeWeatherIcon}.png`}
+              alt="weather icon"
+            ></img>
+          </div>
+          <div className="place-weather-description cell">{placeWeather}</div>
+        </div>
+      ) : (
+        <>
+          <div className="error-icon cell">
+            <FontAwesomeIcon icon={faExclamationCircle} />
+          </div>
+          <div className="error-message cell">Unable to load data</div>
+        </>
+      )}
       <div className="place-controls-container">
         <div className="refresh">
-          <FontAwesomeIcon icon={faRedoAlt} onClick={handleRefreshClick} />
+          <FontAwesomeIcon
+            icon={faRedoAlt}
+            onClick={handleRefreshClick}
+            style={{ color: "6e6e6e" }}
+          />
         </div>
         <div className="remove">
-          <FontAwesomeIcon icon={faTimes} onClick={handleDeleteClick} />
+          <FontAwesomeIcon
+            icon={faTimes}
+            onClick={handleDeleteClick}
+            style={{ color: "6e6e6e" }}
+          />
         </div>
       </div>
     </div>
