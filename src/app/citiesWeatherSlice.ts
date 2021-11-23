@@ -21,6 +21,8 @@ export const getWeatherInfoAsync = createAsyncThunk(
       if (resp.ok) {
         const weatherInfo = await resp.json();
         return { id, name, weatherInfo };
+      } else {
+        throw new Error("Response not with 200-299 status code");
       }
     } catch (error: any) {
       return { id: id, name: name, weatherInfo: null };
@@ -40,6 +42,8 @@ export const updateWeatherInfoAsync = createAsyncThunk(
       if (resp.ok) {
         const weatherInfo = await resp.json();
         return { id, weatherInfo };
+      } else {
+        throw new Error("Response not with 200-299 status code");
       }
     } catch (error: any) {
       return { id: id, weatherInfo: null };
@@ -76,7 +80,7 @@ export const citiesWeatherSlice = createSlice({
           };
 
           if (!cityWeatherInfoEntry.id || !cityWeatherInfoEntry.name) {
-            throw new Error("Error inserting id/name"); //<-------
+            throw new Error("Error inserting id/name");
           }
 
           state.push(cityWeatherInfoEntry);
