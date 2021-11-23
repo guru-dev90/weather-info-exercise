@@ -10,7 +10,10 @@ import "../styles/PlaceEntry.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { deleteCity, updateWeatherInfoAsync } from "../app/citiesWeatherSlice";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { addMenuItems } from "../app/dropdownMenuSlice";
+import {
+  addMenuItems,
+  IDropdownMenuStateEntry,
+} from "../app/dropdownMenuSlice";
 
 interface IPlaceEntryProps {
   placeId: string;
@@ -28,7 +31,9 @@ function PlaceEntry({
   errorFlag,
 }: IPlaceEntryProps) {
   const dispatch = useAppDispatch();
-  const menuItems = useAppSelector((state) => state.dropdownMenuItems)[0];
+  const menuItems: IDropdownMenuStateEntry[] = useAppSelector(
+    (state) => state.dropdownMenuItems
+  )[0];
 
   const handleRefreshClick = () => {
     dispatch(updateWeatherInfoAsync({ id: placeId, name: placeName }));
