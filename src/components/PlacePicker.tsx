@@ -10,7 +10,10 @@ import Select, {
 import citiesFromJson from "../data/cities.json";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { getWeatherInfoAsync } from "../app/citiesWeatherSlice";
-import { addMenuItems } from "../app/dropdownMenuSlice";
+import {
+  addMenuItems,
+  IDropdownMenuStateEntry,
+} from "../app/dropdownMenuSlice";
 
 library.add(faSort);
 
@@ -70,7 +73,9 @@ function PlacePicker() {
     }),
   };
 
-  const menuItems: any = useAppSelector((state) => state.dropdownMenuItems)[0];
+  const menuItems: IDropdownMenuStateEntry[] = useAppSelector(
+    (state) => state.dropdownMenuItems
+  )[0];
 
   return (
     <Select
@@ -82,16 +87,10 @@ function PlacePicker() {
       onChange={async (opt: any) => {
         if (opt) {
           setSelection(0);
-          //try {
           dispatch(getWeatherInfoAsync({ id: opt.value, name: opt.label }));
-          //const originalPromiseResult = unwrapResult(resultAction);
-          //console.log(originalPromiseResult);
-          //} catch (rejectedValueOrSerializedError) {
-          // handle error here
-          //}
 
           const updatedMenuItems = menuItems.filter(
-            (entry: any) => entry.value !== opt.value
+            (entry: IDropdownMenuStateEntry) => entry.value !== opt.value
           );
           dispatch(addMenuItems({ menuItems: updatedMenuItems }));
         }

@@ -62,39 +62,53 @@ export const citiesWeatherSlice = createSlice({
     builder.addCase(
       getWeatherInfoAsync.fulfilled,
       (state: ICitiesWeatherStateEntry[], action) => {
-        const cityWeatherInfoEntry: ICitiesWeatherStateEntry = {
-          id: action.payload ? action.payload.id : "",
-          name: action.payload?.name ? action.payload.name : "", //<---------------
-          weatherDescription: action.payload?.weatherInfo
-            ? action.payload?.weatherInfo.weather[0].description
-            : null,
-          weatherIcon: action.payload?.weatherInfo
-            ? action.payload?.weatherInfo.weather[0].icon
-            : null,
-          errorFlag: action.payload?.weatherInfo ? false : true,
-        };
+        try {
+          const cityWeatherInfoEntry: ICitiesWeatherStateEntry = {
+            id: action.payload ? action.payload.id : "",
+            name: action.payload?.name ? action.payload.name : "",
+            weatherDescription: action.payload?.weatherInfo
+              ? action.payload?.weatherInfo?.weather[0]?.description
+              : null,
+            weatherIcon: action.payload?.weatherInfo
+              ? action.payload?.weatherInfo?.weather[0]?.icon
+              : null,
+            errorFlag: action.payload?.weatherInfo ? false : true,
+          };
 
-        state.push(cityWeatherInfoEntry);
+          if (!cityWeatherInfoEntry.id || !cityWeatherInfoEntry.name) {
+            throw new Error("Error inserting id/name"); //<-------
+          }
+
+          state.push(cityWeatherInfoEntry);
+        } catch (error) {
+          console.log("Error: " + error);
+        }
       }
     );
     builder.addCase(
       updateWeatherInfoAsync.fulfilled,
       (state: ICitiesWeatherStateEntry[], action) => {
-        const index = state.findIndex(
-          (cityWeatherInfoEntry) =>
-            cityWeatherInfoEntry.id === action.payload?.id
-        );
+        try {
+          const index = state.findIndex(
+            (cityWeatherInfoEntry) =>
+              cityWeatherInfoEntry.id === action.payload?.id
+          );
 
-        if (action.payload?.weatherInfo) {
-          state[index].weatherIcon =
-            action.payload?.weatherInfo.weather[0].icon;
-          state[index].weatherDescription =
-            action.payload?.weatherInfo.weather[0].description;
-          state[index].errorFlag = false;
-        } else {
-          state[index].errorFlag = true;
-          state[index].weatherDescription = null;
-          state[index].weatherIcon = null;
+          if (index === -1) throw new Error("Couldn't find id in state");
+
+          if (action.payload?.weatherInfo) {
+            state[index].weatherIcon =
+              action.payload?.weatherInfo?.weather[0]?.icon;
+            state[index].weatherDescription =
+              action.payload?.weatherInfo?.weather[0]?.description;
+            state[index].errorFlag = false;
+          } else {
+            state[index].errorFlag = true;
+            state[index].weatherDescription = null;
+            state[index].weatherIcon = null;
+          }
+        } catch (error) {
+          console.log("Error: " + error);
         }
       }
     );

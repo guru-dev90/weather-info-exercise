@@ -57,26 +57,30 @@ function PlaceEntry({
           <div className="place-weather-description cell">{placeWeather}</div>
         </div>
       ) : (
-        <>
+        <div className="error-container">
           <div className="error-icon cell">
-            <FontAwesomeIcon icon={faExclamationCircle} />
+            <FontAwesomeIcon
+              icon={faExclamationCircle}
+              style={{ fontSize: "1.2rem" }}
+            />
           </div>
           <div className="error-message cell">Unable to load data</div>
-        </>
+        </div>
       )}
+
       <div className="place-controls-container">
         <div className="refresh">
           <FontAwesomeIcon
             icon={faRedoAlt}
             onClick={handleRefreshClick}
-            style={{ color: "6e6e6e" }}
+            style={{ color: "6e6e6e", fontSize: "1.1rem" }}
           />
         </div>
         <div className="remove">
           <FontAwesomeIcon
             icon={faTimes}
             onClick={handleDeleteClick}
-            style={{ color: "6e6e6e" }}
+            style={{ color: "6e6e6e", fontSize: "1.2rem" }}
           />
         </div>
       </div>
