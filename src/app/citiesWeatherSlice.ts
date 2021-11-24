@@ -61,6 +61,9 @@ export const citiesWeatherSlice = createSlice({
       );
       state.splice(0, state.length, ...modifiedState);
     },
+    dummyCitiesWeatherSlice: (state: ICitiesWeatherStateEntry[], action) => {
+      //usefull to update the session storage with the last inserted object
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(
@@ -119,6 +122,30 @@ export const citiesWeatherSlice = createSlice({
   },
 });
 
-export const { deleteCity } = citiesWeatherSlice.actions;
+/* MIDDLEWARE */
+export const persistCitiesMiddleware =
+  (store: any) => (next: any) => (action: any) => {
+    const cityWeatherSliceState = store.getState().citiesWeatherList;
+    sessionStorage.setItem(
+      "cityWeatherSliceState",
+      JSON.stringify(cityWeatherSliceState)
+    );
+
+    return next(action);
+  };
+/*            */
+
+export const reHydrateCitiesWeatherSlice = () => {
+  if (sessionStorage.getItem("cityWeatherSliceState") !== null) {
+    // @ts-ignore
+    const stateStringyfied: string = sessionStorage.getItem(
+      "cityWeatherSliceState"
+    );
+    return JSON.parse(stateStringyfied); // re-hydrate the store
+  }
+};
+
+export const { deleteCity, dummyCitiesWeatherSlice } =
+  citiesWeatherSlice.actions;
 
 export default citiesWeatherSlice.reducer;

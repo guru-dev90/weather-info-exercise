@@ -9,7 +9,10 @@ import Select, {
 } from "react-select";
 import citiesFromJson from "../data/cities.json";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { getWeatherInfoAsync } from "../app/citiesWeatherSlice";
+import {
+  dummyCitiesWeatherSlice,
+  getWeatherInfoAsync,
+} from "../app/citiesWeatherSlice";
 import {
   addMenuItems,
   IDropdownMenuStateEntry,
@@ -37,11 +40,13 @@ function PlacePicker() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const menuItems = citiesFromJson.map((elem) => ({
-      label: elem.name,
-      value: elem._id,
-    }));
-    dispatch(addMenuItems({ menuItems }));
+    if (sessionStorage.getItem("menuItemsSliceState") === null) {
+      const menuItems = citiesFromJson.map((elem) => ({
+        label: elem.name,
+        value: elem._id,
+      }));
+      dispatch(addMenuItems({ menuItems }));
+    }
   }, [dispatch]);
 
   const customSelectStyles = {
@@ -93,6 +98,9 @@ function PlacePicker() {
             (entry: IDropdownMenuStateEntry) => entry.value !== opt.value
           );
           dispatch(addMenuItems({ menuItems: updatedMenuItems }));
+
+          const func = () => dispatch(dummyCitiesWeatherSlice({}));
+          setTimeout(func, 5000);
         }
       }}
     />

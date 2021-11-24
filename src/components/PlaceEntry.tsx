@@ -8,10 +8,15 @@ import {
 
 import "../styles/PlaceEntry.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { deleteCity, updateWeatherInfoAsync } from "../app/citiesWeatherSlice";
+import {
+  deleteCity,
+  dummyCitiesWeatherSlice,
+  updateWeatherInfoAsync,
+} from "../app/citiesWeatherSlice";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import {
   addMenuItems,
+  dummyDropdownMenuSlice,
   IDropdownMenuStateEntry,
 } from "../app/dropdownMenuSlice";
 
@@ -37,6 +42,8 @@ function PlaceEntry({
 
   const handleRefreshClick = () => {
     dispatch(updateWeatherInfoAsync({ id: placeId, name: placeName }));
+    const func = () => dispatch(dummyCitiesWeatherSlice({}));
+    setTimeout(func, 5000);
   };
 
   const handleDeleteClick = () => {
@@ -46,6 +53,9 @@ function PlaceEntry({
         menuItems: [{ label: placeName, value: placeId }, ...menuItems],
       })
     );
+
+    const func = () => dispatch(dummyDropdownMenuSlice({}));
+    setTimeout(func, 5000);
   };
 
   return (
