@@ -7,7 +7,6 @@
 
   <p align="center">
     The goal of this exercise was to build a simple single-page web application using react and redux-toolkit in order to practice specifically the usage of redux-toolkit.
-
     <br />
     <a href="https://github.com/guru-dev90/weather-info-exercise"><strong>Explore the docs »</strong></a>
     <br />
